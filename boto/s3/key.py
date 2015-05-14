@@ -974,8 +974,9 @@ class Key(object):
             # If you use customer-provided encryption keys, the ETag value that
             # Amazon S3 returns in the response will not be the MD5 of the
             # object.
-            server_side_encryption_customer_algorithm = response.getheader(
-                'x-amz-server-side-encryption-customer-algorithm', None)
+            server_side_encryption_customer_algorithm = (response.getheader(
+                'x-amz-server-side-encryption-customer-algorithm', None) or
+                response.getheader('x-amz-server-side-encryption', None))
             if server_side_encryption_customer_algorithm is None:
                 if self.etag != '"%s"' % md5:
                     raise provider.storage_data_error(
